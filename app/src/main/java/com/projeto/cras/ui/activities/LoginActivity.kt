@@ -1,5 +1,6 @@
-package com.projeto.cras.Activities
+package com.projeto.cras.ui.activities
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,30 +10,47 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.projeto.cras.AuthState
-import com.projeto.cras.AuthViewModel
+import com.projeto.cras.viewmodel.AuthState
+import com.projeto.cras.viewmodel.AuthViewModel
 import com.projeto.cras.R
 
 @Composable
-fun HomeActivity(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
+fun LoginActivity(modifier: Modifier = Modifier,navController: NavController,authViewModel: AuthViewModel) {
+
+    var email by remember {
+        mutableStateOf("")
+    }
+
+    var password by remember {
+        mutableStateOf("")
+    }
 
     val authState = authViewModel.authState.observeAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(authState.value) {
-        when (authState.value) {
-            is AuthState.Unauthenticated -> navController.navigate("login")
+        when(authState.value){
+            is AuthState.Authenticated -> navController.navigate("home")
+            is AuthState.Error -> Toast.makeText(context,
+                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
             else -> Unit
         }
     }
@@ -51,41 +69,49 @@ fun HomeActivity(modifier: Modifier = Modifier, navController: NavController, au
             modifier = Modifier.size(300.dp)
         )
 
-        Text(text = "Página Inicial", fontSize = 32.sp)
+        Text(text = "Página Login", fontSize = 32.sp)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            navController.navigate("resources")
-        },
-        ) {
-            Text(text = "Consultar recursos")
-        }
+        OutlinedTextField(
+            value = email,
+            onValueChange = {
+                email = it
+            },
+            label = {
+                Text(text = "Email")
+            }
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Button(onClick = {
-            navController.navigate("resources")
-        },
-        ) {
-            Text(text = "Requisitar recursos")
-        }
+        OutlinedTextField(
+            value = password,
+            onValueChange = {
+                password = it
+            },
+            label = {
+                Text(text = "Senha")
+            }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
         Button(onClick = {
-            navController.navigate("resources")
+            authViewModel.login(email,password)
         },
+            enabled = authState.value != AuthState.Loading
         ) {
-            Text(text = "Editar dados")
+            Text(text = "Entrar")
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         TextButton(onClick = {
-            authViewModel.signout()
+            navController.navigate("signup")
         }) {
-            Text(text = "Sair")
+            Text(text = "Não possui uma conta? Criar")
         }
+
     }
+
 }

@@ -1,4 +1,4 @@
-package com.projeto.cras.Activities
+package com.projeto.cras.ui.activities
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -18,8 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.projeto.cras.AuthState
-import com.projeto.cras.AuthViewModel
+import com.projeto.cras.viewmodel.AuthState
+import com.projeto.cras.viewmodel.AuthViewModel
 import com.projeto.cras.R
 
 @Composable
@@ -29,21 +29,10 @@ fun SignUpActivity(
     authViewModel: AuthViewModel
 ) {
 
-    var name by remember {
-        mutableStateOf("")
-    }
-
-    var cpf by remember {
-        mutableStateOf("")
-    }
-
-    var email by remember {
-        mutableStateOf("")
-    }
-
-    var password by remember {
-        mutableStateOf("")
-    }
+    var name by remember { mutableStateOf("") }
+    var cpf by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     val authState = authViewModel.authState.observeAsState()
     val context = LocalContext.current
@@ -67,7 +56,7 @@ fun SignUpActivity(
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Image(
             painter = painterResource(id = R.drawable.logo_cras),
             contentDescription = "Logo da Aplicação",
@@ -80,55 +69,41 @@ fun SignUpActivity(
 
         OutlinedTextField(
             value = name,
-            onValueChange = {
-                name = it
-            },
-            label = {
-                Text(text = "Nome Completo")
-            }
+            onValueChange = { name = it },
+            label = { Text(text = "Nome Completo") }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = cpf,
-            onValueChange = {
-                cpf = it
-            },
-            label = {
-                Text(text = "Cpf")
-            }
+            onValueChange = { cpf = it },
+            label = { Text(text = "Cpf") }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = email,
-            onValueChange = {
-                email = it
-            },
-            label = {
-                Text(text = "Email")
-            }
+            onValueChange = { email = it },
+            label = { Text(text = "Email") }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = password,
-            onValueChange = {
-                password = it
-            },
-            label = {
-                Text(text = "Senha")
-            }
+            onValueChange = { password = it },
+            label = { Text(text = "Senha") }
         )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                authViewModel.signup(email, password)
-            }, enabled = authState.value != AuthState.Loading
+                authViewModel.signup(email, password, name, cpf)
+            },
+            enabled = authState.value != AuthState.Loading
         ) {
             Text(text = "Criar Conta")
         }
@@ -140,6 +115,5 @@ fun SignUpActivity(
         }) {
             Text(text = "Já possui uma conta? Logar")
         }
-
     }
 }
