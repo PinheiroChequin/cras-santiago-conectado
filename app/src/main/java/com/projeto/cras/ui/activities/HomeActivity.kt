@@ -58,7 +58,7 @@ fun HomeActivity(modifier: Modifier = Modifier, navController: NavController, au
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            navController.navigate("resources")
+            navController.navigate("consultResources")
         }) {
             Text(text = "Consultar recursos")
         }
@@ -66,7 +66,7 @@ fun HomeActivity(modifier: Modifier = Modifier, navController: NavController, au
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(onClick = {
-            navController.navigate("resources")
+            navController.navigate("RequestResources")
         }) {
             Text(text = "Requisitar recursos")
         }

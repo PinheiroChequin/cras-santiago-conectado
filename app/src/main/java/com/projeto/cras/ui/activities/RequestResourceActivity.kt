@@ -12,19 +12,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.projeto.cras.models.Resource
 import com.projeto.cras.viewmodel.AuthViewModel
 import com.projeto.cras.viewmodel.RequestStatus
-import com.projeto.cras.viewmodel.Resource
 import com.projeto.cras.viewmodel.ResourceViewModel
 
 @Composable
-fun ResourcesActivity(
+fun RequestResourcesActivity(
     modifier: Modifier = Modifier,
     navController: NavController,
     resourceViewModel: ResourceViewModel = viewModel(),
     authViewModel: AuthViewModel = viewModel()
 ) {
     val resources by resourceViewModel.resources.observeAsState(emptyList())
+    val filteredResources = resources.filter { it.isRequestable }
     val requestStatus by resourceViewModel.requestStatus.observeAsState()
 
     val context = LocalContext.current
@@ -59,7 +60,7 @@ fun ResourcesActivity(
         Text(text = "Recursos Disponíveis", fontSize = 24.sp)
         Spacer(modifier = Modifier.height(16.dp))
 
-        resources.forEach { resource ->
+        filteredResources.forEach { resource ->
             ResourceItem(resource = resource) {
                 selectedResource = resource
             }

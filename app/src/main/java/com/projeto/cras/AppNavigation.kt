@@ -5,9 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.projeto.cras.ui.activities.ConsultResourcesActivity
 import com.projeto.cras.ui.activities.HomeActivity
 import com.projeto.cras.ui.activities.LoginActivity
-import com.projeto.cras.ui.activities.ResourcesActivity
+import com.projeto.cras.ui.activities.RequestResourcesActivity
 import com.projeto.cras.ui.activities.SignUpActivity
 import com.projeto.cras.ui.activities.SplashScreen
 import com.projeto.cras.ui.activities.UserEditActivity
@@ -30,8 +31,11 @@ fun AppNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel) {
         composable("home"){
             HomeActivity(modifier, navController, authViewModel)
         }
-        composable("resources") {
-            ResourcesActivity(modifier, navController)
+        composable("requestResources") {
+            RequestResourcesActivity(modifier, navController)
+        }
+        composable("consultResources") {
+            ConsultResourcesActivity(modifier, navController)
         }
         composable("user_edit/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")

@@ -5,6 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.projeto.cras.models.Resource
+
+/*
+
+    name: String
+    description: String
+    amount: Number
+    isRequestable: Bool
+
+*/
 
 class ResourceViewModel : ViewModel() {
 
@@ -29,6 +39,7 @@ class ResourceViewModel : ViewModel() {
                         id = document.id,
                         name = document.getString("name") ?: "",
                         description = document.getString("description") ?: "",
+                        isRequestable = document.getBoolean("isRequestable") ?: false,
                         amount = document.getLong("amount")?.toInt() ?: 0
                     )
                 }
@@ -62,13 +73,6 @@ class ResourceViewModel : ViewModel() {
             }
     }
 }
-
-data class Resource(
-    val id: String,
-    val name: String,
-    val description: String,
-    val amount: Int
-)
 
 sealed class RequestStatus {
     data object Success : RequestStatus()
