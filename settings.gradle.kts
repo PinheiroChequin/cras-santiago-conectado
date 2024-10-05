@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "cursoideal"
+rootProject.name = "CRAS - Santiago Conectado"
 include(":app")

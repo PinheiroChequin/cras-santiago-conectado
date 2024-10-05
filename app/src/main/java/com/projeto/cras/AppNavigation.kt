@@ -9,6 +9,7 @@ import com.projeto.cras.ui.activities.HomeActivity
 import com.projeto.cras.ui.activities.LoginActivity
 import com.projeto.cras.ui.activities.ResourcesActivity
 import com.projeto.cras.ui.activities.SignUpActivity
+import com.projeto.cras.ui.activities.SplashScreen
 import com.projeto.cras.ui.activities.UserEditActivity
 import com.projeto.cras.viewmodel.AuthViewModel
 
@@ -16,7 +17,10 @@ import com.projeto.cras.viewmodel.AuthViewModel
 fun AppNavigation(modifier: Modifier = Modifier,authViewModel: AuthViewModel) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "login", builder = {
+    NavHost(navController = navController, startDestination = "splash", builder = {
+        composable("splash"){
+            SplashScreen { navController.navigate("login") }
+        }
         composable("login"){
             LoginActivity(modifier, navController, authViewModel)
         }
